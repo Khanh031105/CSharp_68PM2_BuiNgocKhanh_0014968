@@ -1,93 +1,75 @@
-﻿namespace WinFormsApp1
+namespace QLSV
 {
     partial class Form1
     {
         private System.ComponentModel.IContainer components = null;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TextBox txt_username;
+        private TextBox txt_password;
+        private Button btnlogin;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
-        #region Windows Form Designer generated code
 
         private void InitializeComponent()
         {
             label1 = new Label();
-            txt_username = new TextBox();
-            txt_password = new TextBox();
             label2 = new Label();
             label3 = new Label();
+            txt_username = new TextBox();
+            txt_password = new TextBox();
             btnlogin = new Button();
             SuspendLayout();
-         
+
             label1.AutoSize = true;
-            label1.ForeColor = SystemColors.HotTrack;
-            label1.Location = new Point(319, 70);
-            label1.Name = "label1";
-            label1.Size = new Size(144, 15);
-            label1.TabIndex = 0;
-            label1.Text = "HỆ THỐNG QUẢN LÍ SINH VIÊN";
-            label1.Click += label1_Click;
-          
-            txt_username.Location = new Point(389, 158);
-            txt_username.Name = "txt_username";
-            txt_username.Size = new Size(241, 23);
-            txt_username.TabIndex = 1;
-            txt_username.TextChanged += textBox1_TextChanged;
-           
-            txt_password.Location = new Point(389, 201);
-            txt_password.Name = "txt_password";
-            txt_password.Size = new Size(241, 23);
-            txt_password.TabIndex = 2;
-            
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(45, 64, 89);
+            label1.Location = new Point(230, 70);
+            label1.Text = "HỆ THỐNG QUẢN LÝ SINH VIÊN";
+
             label2.AutoSize = true;
-            label2.Location = new Point(296, 166);
-            label2.Name = "label2";
-            label2.Size = new Size(90, 15);
-            label2.TabIndex = 3;
-            label2.Text = "ten dang nhap :";
-          
+            label2.Location = new Point(235, 160);
+            label2.Text = "Tên đăng nhập:";
+
+            txt_username.Location = new Point(360, 156);
+            txt_username.Size = new Size(260, 27);
+
             label3.AutoSize = true;
-            label3.Location = new Point(296, 209);
-            label3.Name = "label3";
-            label3.Size = new Size(63, 15);
-            label3.TabIndex = 4;
-            label3.Text = "mat khau :";
-           
-            btnlogin.Location = new Point(407, 242);
-            btnlogin.Name = "btnlogin";
-            btnlogin.Size = new Size(105, 44);
-            btnlogin.TabIndex = 5;
+            label3.Location = new Point(235, 210);
+            label3.Text = "Mật khẩu:";
+
+            txt_password.Location = new Point(360, 206);
+            txt_password.Size = new Size(260, 27);
+
+            btnlogin.BackColor = Color.FromArgb(55, 76, 100);
+            btnlogin.FlatStyle = FlatStyle.Flat;
+            btnlogin.ForeColor = Color.White;
+            btnlogin.Location = new Point(405, 265);
+            btnlogin.Size = new Size(150, 45);
             btnlogin.Text = "Đăng nhập";
-            btnlogin.UseVisualStyleBackColor = true;
+            btnlogin.UseVisualStyleBackColor = false;
             btnlogin.Click += btnlogin_Click;
-            
-            AutoScaleDimensions = new SizeF(7F, 15F);
+
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(btnlogin);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(txt_password);
-            Controls.Add(txt_username);
+            BackColor = Color.WhiteSmoke;
+            ClientSize = new Size(850, 450);
             Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(txt_username);
+            Controls.Add(label3);
+            Controls.Add(txt_password);
+            Controls.Add(btnlogin);
             Name = "Form1";
-            Text = "Đăng nhập hệ thống";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Đăng nhập";
             ResumeLayout(false);
             PerformLayout();
         }
-
-        #endregion
-
-        private Label label1;
-        private TextBox txt_username;
-        private TextBox txt_password;
-        private Label label2;
-        private Label label3;
-        private Button btnlogin;
     }
 }

@@ -1,8 +1,8 @@
 namespace QLSV
 {
-    public partial class QLSinhVien : UserControl
+    public partial class QLLopHoc : UserControl
     {
-        public QLSinhVien()
+        public QLLopHoc()
         {
             InitializeComponent();
             LoadData();
@@ -11,16 +11,13 @@ namespace QLSV
         private void LoadData()
         {
             dataGridView1.Rows.Clear();
-            dataGridView1.Rows.Add("1", "hieu", "Nam", "11/03/2026", "68PM1");
-            dataGridView1.Rows.Add("2", "Nguyễn Văn B", "Nam", "11/03/2026", "68PM2");
-            dataGridView1.Rows.Add("3", "Trần Văn C", "Nam", "21/03/2026", "68PM2");
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
+            dataGridView1.Rows.Add("1", "68PM1", "Lớp 68PM1", "Công nghệ thông tin");
+            dataGridView1.Rows.Add("2", "68PM2", "Lớp 68PM2", "Công nghệ thông tin");
         }
 
         private void btn_add_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Add(textBox1.Text, textBox2.Text, comboBox1.Text, dateTimePicker1.Text, comboBox2.Text.Split(' ')[0]);
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
+            dataGridView1.Rows.Add(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
         }
 
         private void btn_refesh_Click(object sender, EventArgs e)
@@ -28,16 +25,14 @@ namespace QLSV
             textBox1.Clear();
             textBox2.Clear();
             textBox3.Clear();
-            comboBox1.Text = "Nam";
-            comboBox2.Text = "68PM1 – Lớp 68PM1";
+            textBox4.Clear();
+            textBoxSearch.Clear();
             LoadData();
         }
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentRow != null)
-                dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
+            if (dataGridView1.CurrentRow != null) dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
         }
 
         private void btn_update_Click(object sender, EventArgs e)
@@ -46,9 +41,8 @@ namespace QLSV
             var r = dataGridView1.CurrentRow;
             r.Cells[0].Value = textBox1.Text;
             r.Cells[1].Value = textBox2.Text;
-            r.Cells[2].Value = comboBox1.Text;
-            r.Cells[3].Value = dateTimePicker1.Text;
-            r.Cells[4].Value = comboBox2.Text.Split(' ')[0];
+            r.Cells[2].Value = textBox3.Text;
+            r.Cells[3].Value = textBox4.Text;
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -57,13 +51,13 @@ namespace QLSV
             var r = dataGridView1.Rows[e.RowIndex];
             textBox1.Text = Convert.ToString(r.Cells[0].Value);
             textBox2.Text = Convert.ToString(r.Cells[1].Value);
-            comboBox1.Text = Convert.ToString(r.Cells[2].Value);
-            comboBox2.Text = Convert.ToString(r.Cells[4].Value) + " – Lớp " + Convert.ToString(r.Cells[4].Value);
+            textBox3.Text = Convert.ToString(r.Cells[2].Value);
+            textBox4.Text = Convert.ToString(r.Cells[3].Value);
         }
 
         private void btn_search_Click(object sender, EventArgs e)
         {
-            string key = textBox3.Text.Trim().ToLower();
+            string key = textBoxSearch.Text.Trim().ToLower();
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 bool show = string.IsNullOrEmpty(key);
