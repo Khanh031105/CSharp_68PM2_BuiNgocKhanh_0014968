@@ -1,3 +1,5 @@
+using Microsoft.Data.SqlClient;
+
 namespace QLSV
 {
     public partial class QLSinhVien : UserControl
@@ -11,16 +13,183 @@ namespace QLSV
         private void LoadData()
         {
             dataGridView1.Rows.Clear();
-            dataGridView1.Rows.Add("1", "hieu", "Nam", "11/03/2026", "68PM1");
-            dataGridView1.Rows.Add("2", "Nguyễn Văn B", "Nam", "11/03/2026", "68PM2");
-            dataGridView1.Rows.Add("3", "Trần Văn C", "Nam", "21/03/2026", "68PM2");
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
+
+            Database db = new Database();
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = "SELECT * FROM SinhVien";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dataGridView1.Rows.Add(
+                        reader["MaSV"].ToString(),
+                        reader["HoTen"].ToString(),
+                        reader["GioiTinh"].ToString(),
+                        Convert.ToDateTime(reader["NgaySinh"]).ToString("dd/MM/yyyy"),
+                        reader["MaLop"].ToString()
+                    );
+                }
+            }
+
+            label7.Text = "Trang 1/1 | " + dataGridView1.Rows.Count + " bản ghi";
         }
 
         private void btn_add_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Add(textBox1.Text, textBox2.Text, comboBox1.Text, dateTimePicker1.Text, comboBox2.Text.Split(' ')[0]);
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
+            if (textBox1.Text.Trim() == "" || textBox2.Text.Trim() == "")
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            Database db = new Database();
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string checkQuery = "SELECT COUNT(*) FROM SinhVien WHERE MaSV=@MaSV";
+
+                SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+                checkCmd.Parameters.AddWithValue("@MaSV", textBox1.Text.Trim());
+
+                int count = (int)checkCmd.ExecuteScalar();
+
+                if (count > 0)
+                {
+                    MessageBox.Show("Mã sinh viên đã tồn tại!");
+                    return;
+                }
+
+                string query = @"INSERT INTO SinhVien
+                (MaSV, HoTen, GioiTinh, NgaySinh, MaLop)
+                VALUES
+                (@MaSV, @HoTen, @GioiTinh, @NgaySinh, @MaLop)";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@MaSV", textBox1.Text.Trim());
+                cmd.Parameters.AddWithValue("@HoTen", textBox2.Text.Trim());
+                cmd.Parameters.AddWithValue("@GioiTinh", comboBox1.Text);
+                cmd.Parameters.AddWithValue("@NgaySinh", dateTimePicker1.Value);
+                cmd.Parameters.AddWithValue("@MaLop", comboBox2.Text.Split(' ')[0]);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Thêm thành công!");
+            LoadData();
+        }
+
+        private void btn_update_Click(object sender, EventArgs e)
+        {
+            Database db = new Database();
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"UPDATE SinhVien
+                SET HoTen=@HoTen,
+                    GioiTinh=@GioiTinh,
+                    NgaySinh=@NgaySinh,
+                    MaLop=@MaLop
+                WHERE MaSV=@MaSV";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@MaSV", textBox1.Text.Trim());
+                cmd.Parameters.AddWithValue("@HoTen", textBox2.Text.Trim());
+                cmd.Parameters.AddWithValue("@GioiTinh", comboBox1.Text);
+                cmd.Parameters.AddWithValue("@NgaySinh", dateTimePicker1.Value);
+                cmd.Parameters.AddWithValue("@MaLop", comboBox2.Text.Split(' ')[0]);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Sửa thành công!");
+            LoadData();
+        }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Trim() == "")
+            {
+                MessageBox.Show("Chọn sinh viên cần xóa!");
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Bạn có chắc muốn xóa?",
+                "Thông báo",
+                MessageBoxButtons.YesNo
+            );
+
+            if (result == DialogResult.No)
+                return;
+
+            Database db = new Database();
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = "DELETE FROM SinhVien WHERE MaSV=@MaSV";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@MaSV", textBox1.Text.Trim());
+
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Xóa thành công!");
+            LoadData();
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            string key = textBox3.Text.Trim();
+
+            dataGridView1.Rows.Clear();
+
+            Database db = new Database();
+
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+
+                string query = @"SELECT * FROM SinhVien
+                WHERE MaSV LIKE @key
+                OR HoTen LIKE @key
+                OR MaLop LIKE @key";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@key", "%" + key + "%");
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dataGridView1.Rows.Add(
+                        reader["MaSV"].ToString(),
+                        reader["HoTen"].ToString(),
+                        reader["GioiTinh"].ToString(),
+                        Convert.ToDateTime(reader["NgaySinh"]).ToString("dd/MM/yyyy"),
+                        reader["MaLop"].ToString()
+                    );
+                }
+            }
+
+            label7.Text = "Trang 1/1 | " + dataGridView1.Rows.Count + " bản ghi";
         }
 
         private void btn_refesh_Click(object sender, EventArgs e)
@@ -28,55 +197,30 @@ namespace QLSV
             textBox1.Clear();
             textBox2.Clear();
             textBox3.Clear();
+
             comboBox1.Text = "Nam";
             comboBox2.Text = "68PM1 – Lớp 68PM1";
+
             LoadData();
-        }
-
-        private void btn_delete_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow != null)
-                dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
-            label7.Text = "Trang 1/1   |   " + dataGridView1.Rows.Count + " bản ghi";
-        }
-
-        private void btn_update_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow == null) return;
-            var r = dataGridView1.CurrentRow;
-            r.Cells[0].Value = textBox1.Text;
-            r.Cells[1].Value = textBox2.Text;
-            r.Cells[2].Value = comboBox1.Text;
-            r.Cells[3].Value = dateTimePicker1.Text;
-            r.Cells[4].Value = comboBox2.Text.Split(' ')[0];
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-            var r = dataGridView1.Rows[e.RowIndex];
-            textBox1.Text = Convert.ToString(r.Cells[0].Value);
-            textBox2.Text = Convert.ToString(r.Cells[1].Value);
-            comboBox1.Text = Convert.ToString(r.Cells[2].Value);
-            comboBox2.Text = Convert.ToString(r.Cells[4].Value) + " – Lớp " + Convert.ToString(r.Cells[4].Value);
-        }
 
-        private void btn_search_Click(object sender, EventArgs e)
-        {
-            string key = textBox3.Text.Trim().ToLower();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                bool show = string.IsNullOrEmpty(key);
-                for (int i = 0; i < row.Cells.Count; i++)
-                {
-                    if (Convert.ToString(row.Cells[i].Value).ToLower().Contains(key))
-                    {
-                        show = true;
-                        break;
-                    }
-                }
-                row.Visible = show;
-            }
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+
+            textBox1.Text = row.Cells[0].Value.ToString();
+            textBox2.Text = row.Cells[1].Value.ToString();
+            comboBox1.Text = row.Cells[2].Value.ToString();
+
+            dateTimePicker1.Value =
+                Convert.ToDateTime(row.Cells[3].Value);
+
+            comboBox2.Text =
+                row.Cells[4].Value.ToString() +
+                " – Lớp " +
+                row.Cells[4].Value.ToString();
         }
     }
 }

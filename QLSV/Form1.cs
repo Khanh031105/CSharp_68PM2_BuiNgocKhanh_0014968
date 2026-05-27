@@ -1,3 +1,7 @@
+using Microsoft.Data.SqlClient;
+using System;
+using System.Windows.Forms;
+
 namespace QLSV
 {
     public partial class Form1 : Form
@@ -5,7 +9,28 @@ namespace QLSV
         public Form1()
         {
             InitializeComponent();
+
             txt_password.PasswordChar = '*';
+
+            TestConnection();
+        }
+
+        private void TestConnection()
+        {
+            Database db = new Database();
+
+            try
+            {
+                using (SqlConnection conn = db.GetConnection())
+                {
+                    conn.Open();
+                    MessageBox.Show("Kết nối database thành công");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi kết nối: " + ex.Message);
+            }
         }
 
         private void btnlogin_Click(object sender, EventArgs e)
@@ -21,7 +46,7 @@ namespace QLSV
             }
             else
             {
-                MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Thông báo");
+                MessageBox.Show("Sai tài khoản hoặc mật khẩu!");
             }
         }
     }
