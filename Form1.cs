@@ -1,70 +1,75 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-
-namespace WinFormsApp1
+namespace QLSV
 {
-    public partial class Form1 : Form
+    partial class Form1
     {
-        private const string VALID_USERNAME = "0014968@st.huce.edu.vn";
-        private const string VALID_PASSWORD = "0014968";
+        private System.ComponentModel.IContainer components = null;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TextBox txt_username;
+        private TextBox txt_password;
+        private Button btnlogin;
 
-        public Form1()
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
-            ConfigureForm();
+            if (disposing && (components != null)) components.Dispose();
+            base.Dispose(disposing);
         }
 
-        private void ConfigureForm()
+        private void InitializeComponent()
         {
-            txt_password.PasswordChar = '*';
-            this.AcceptButton = btnlogin;
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            txt_username = new TextBox();
+            txt_password = new TextBox();
+            btnlogin = new Button();
+            SuspendLayout();
+
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.FromArgb(45, 64, 89);
+            label1.Location = new Point(230, 70);
+            label1.Text = "HỆ THỐNG QUẢN LÝ SINH VIÊN";
+
+            label2.AutoSize = true;
+            label2.Location = new Point(235, 160);
+            label2.Text = "Tên đăng nhập:";
+
+            txt_username.Location = new Point(360, 156);
+            txt_username.Size = new Size(260, 27);
+
+            label3.AutoSize = true;
+            label3.Location = new Point(235, 210);
+            label3.Text = "Mật khẩu:";
+
+            txt_password.Location = new Point(360, 206);
+            txt_password.Size = new Size(260, 27);
+
+            btnlogin.BackColor = Color.FromArgb(55, 76, 100);
+            btnlogin.FlatStyle = FlatStyle.Flat;
+            btnlogin.ForeColor = Color.White;
+            btnlogin.Location = new Point(405, 265);
+            btnlogin.Size = new Size(150, 45);
+            btnlogin.Text = "Đăng nhập";
+            btnlogin.UseVisualStyleBackColor = false;
+            btnlogin.Click += btnlogin_Click;
+
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
+            ClientSize = new Size(850, 450);
+            Controls.Add(label1);
+            Controls.Add(label2);
+            Controls.Add(txt_username);
+            Controls.Add(label3);
+            Controls.Add(txt_password);
+            Controls.Add(btnlogin);
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Đăng nhập";
+            ResumeLayout(false);
+            PerformLayout();
         }
-
-        private bool IsValidCredentials(string username, string password)
-        {
-            return username == VALID_USERNAME && password == VALID_PASSWORD;
-        }
-
-        private void btnlogin_Click(object sender, EventArgs e)
-        {
-            string username = txt_username.Text.Trim();
-            string password = txt_password.Text;
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                MessageBox.Show("Vui Lòng Nhập Tên Đăng Nhập Và Password.",
-                                "Thong bao",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (IsValidCredentials(username, password))
-            {
-                MessageBox.Show("Đăng Nhập Thành Công!",
-                                "Thanh cong",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Ten dang nhap hoac mat khau khong dung.",
-                                "That bai",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-
-                txt_password.Clear();
-                txt_password.Focus();
-            }
-        }
-
-        private void label1_Click(object sender, EventArgs e) { }
-
-        private void textBox1_TextChanged(object sender, EventArgs e) { }
     }
 }
