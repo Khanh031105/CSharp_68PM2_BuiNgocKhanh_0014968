@@ -1,66 +1,39 @@
 namespace QLSV
 {
-    partial class FrmMain
+    public partial class FrmMain : Form
     {
-        private System.ComponentModel.IContainer components = null;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem menuSinhVien;
-        private ToolStripMenuItem menuLopHoc;
-        private ToolStripMenuItem menuDangXuat;
-        private Panel panelContent;
-
-        protected override void Dispose(bool disposing)
+        public FrmMain()
         {
-            if (disposing && (components != null)) components.Dispose();
-            base.Dispose(disposing);
+            InitializeComponent();
         }
 
-        private void InitializeComponent()
+        private void FrmMain_Load(object sender, EventArgs e)
         {
-            menuStrip1 = new MenuStrip();
-            menuSinhVien = new ToolStripMenuItem();
-            menuLopHoc = new ToolStripMenuItem();
-            menuDangXuat = new ToolStripMenuItem();
-            panelContent = new Panel();
-            menuStrip1.SuspendLayout();
-            SuspendLayout();
+            LoadControl(new QLSinhVien());
+        }
 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { menuSinhVien, menuLopHoc, menuDangXuat });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1500, 28);
+        private void menuSinhVien_Click(object sender, EventArgs e)
+        {
+            LoadControl(new QLSinhVien());
+        }
 
-            menuSinhVien.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            menuSinhVien.Text = "Quản Lý Sinh Viên";
-            menuSinhVien.Click += menuSinhVien_Click;
+        private void menuLopHoc_Click(object sender, EventArgs e)
+        {
+            LoadControl(new QLLopHoc());
+        }
 
-            menuLopHoc.Text = "Quản Lý Lớp Học";
-            menuLopHoc.Click += menuLopHoc_Click;
+        private void menuDangXuat_Click(object sender, EventArgs e)
+        {
+            Form1 login = new Form1();
+            login.Show();
+            this.Close();
+        }
 
-            menuDangXuat.ForeColor = Color.Crimson;
-            menuDangXuat.Text = "Đăng xuất";
-            menuDangXuat.Click += menuDangXuat_Click;
-
-            panelContent.Dock = DockStyle.Fill;
-            panelContent.Location = new Point(0, 28);
-            panelContent.Name = "panelContent";
-            panelContent.Size = new Size(1500, 872);
-
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1500, 900);
-            Controls.Add(panelContent);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
-            Name = "FrmMain";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Quản Lý Sinh Viên";
-            WindowState = FormWindowState.Maximized;
-            Load += FrmMain_Load;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+        private void LoadControl(UserControl uc)
+        {
+            panelContent.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panelContent.Controls.Add(uc);
         }
     }
 }
