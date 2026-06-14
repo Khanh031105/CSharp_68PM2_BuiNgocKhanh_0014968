@@ -18,6 +18,7 @@ namespace QLSV
         private Button btn_delete;
         private Button btn_refesh;
         private Button btn_search;
+        private Button btn_viewSinhVien;
         private Label label6;
         private DataGridView dataGridView1;
 
@@ -44,8 +45,10 @@ namespace QLSV
             btn_delete = new Button();
             btn_refesh = new Button();
             btn_search = new Button();
+            btn_viewSinhVien = new Button();
             label6 = new Label();
             dataGridView1 = new DataGridView();
+
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
@@ -125,6 +128,16 @@ namespace QLSV
             btn_refesh.UseVisualStyleBackColor = false;
             btn_refesh.Click += btn_refesh_Click;
 
+            btn_viewSinhVien.BackColor = Color.FromArgb(41, 128, 185);
+            btn_viewSinhVien.FlatStyle = FlatStyle.Flat;
+            btn_viewSinhVien.ForeColor = Color.White;
+            btn_viewSinhVien.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btn_viewSinhVien.Location = new Point(15, 690);
+            btn_viewSinhVien.Size = new Size(470, 58);
+            btn_viewSinhVien.Text = "Xem danh sách sinh viên";
+            btn_viewSinhVien.UseVisualStyleBackColor = false;
+            btn_viewSinhVien.Click += btn_viewSinhVien_Click;
+
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label6.Location = new Point(510, 35);
@@ -144,6 +157,9 @@ namespace QLSV
             btn_search.Click += btn_search_Click;
 
             dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.ReadOnly = true;
+            dataGridView1.MultiSelect = false;
             dataGridView1.BackgroundColor = Color.White;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(510, 130);
@@ -163,12 +179,15 @@ namespace QLSV
             Controls.Add(btn_update);
             Controls.Add(btn_delete);
             Controls.Add(btn_refesh);
+            Controls.Add(btn_viewSinhVien);
             Controls.Add(label6);
             Controls.Add(textBoxSearch);
             Controls.Add(btn_search);
             Controls.Add(dataGridView1);
+
             Name = "QLLopHoc";
             Size = new Size(1500, 850);
+
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
